@@ -1,48 +1,53 @@
 package ru.netology.qa;
 
-import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
-import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIVITY;
-import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
-import static io.appium.java_client.remote.MobileCapabilityType.DEVICE_NAME;
-
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.PageFactory;
-
-import java.net.URL;
-import java.time.Duration;
-
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
+import org.openqa.selenium.support.PageFactory;
+
 public class MainScreen {
-    public AppiumDriver driver;
+    private AndroidDriver driver;
 
-    @AndroidFindBy(id = "ru.netology.testing.uiautomator:id/userInput")
-    public MobileElement EditText;
+    @AndroidFindBy(id = "userInput")
+    private AndroidElement EditText;
 
-    @AndroidFindBy(id = "buttonActivity")
-    public MobileElement buttonActivity;
+    @AndroidFindBy(id = "ru.netology.testing.uiautomator:id/buttonActivity")
+    private AndroidElement buttonActivity;
 
-    @AndroidFindBy(id = "buttonChange")
-    public MobileElement buttonChange;
-
-
-    @AndroidFindBy(id = "text")
-    public MobileElement TextView1;
+    @AndroidFindBy(id = "ru.netology.testing.uiautomator:id/buttonChange")
+    private AndroidElement buttonChange;
 
 
-    public MainScreen(AppiumDriver driver) {
-        this.driver = driver;
-        this.EditText = (MobileElement) this.driver.findElementById("ru.netology.testing.uiautomator:id/userInput");
-        this.buttonChange = (MobileElement) this.driver.findElementById("ru.netology.testing.uiautomator:id/buttonChange");
-        this.buttonActivity = (MobileElement) this.driver.findElementById("ru.netology.testing.uiautomator:id/buttonActivity");
+    @AndroidFindBy(id = "ru.netology.testing.uiautomator:id/text")
+    private AndroidElement TextView1;
 
+
+    public MainScreen(AndroidDriver appiumDriver) {
+        this.driver = appiumDriver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void setPage2() {
-        this.TextView1 = (MobileElement) this.driver.findElementById("ru.netology.testing.uiautomator:id/text");
+    public void ClickButtonChange() {
+        buttonChange.click();
     }
 
+
+    public String editTextGetText() {
+        return EditText.getText().toString();
+    }
+
+    public void setEditText(String text) {
+        EditText.sendKeys(text);
+    }
+
+
+    public void ClickButtonActive() {
+        buttonActivity.click();
+    }
+
+    public String textGetString() {
+        return TextView1.getText().toString();
+    }
 }

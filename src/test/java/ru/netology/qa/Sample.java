@@ -1,13 +1,9 @@
 package ru.netology.qa;
 
-import io.appium.java_client.AppiumDriver;
-
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import io.appium.java_client.MobileElement;
-
-import static ru.netology.qa.MainScreen.*;
+import io.appium.java_client.android.AndroidDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,7 +19,7 @@ import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 public class Sample {
 
 
-    private AppiumDriver driver;
+    private AndroidDriver driver;
 
     @BeforeAll
     public void createDriver() throws MalformedURLException {
@@ -34,22 +30,20 @@ public class Sample {
         desiredCapabilities.setCapability(DEVICE_NAME, "any name");
         desiredCapabilities.setCapability(APP_PACKAGE, "ru.netology.testing.uiautomator");
         desiredCapabilities.setCapability(APP_ACTIVITY, "ru.netology.testing.uiautomator.MainActivity");
-        driver = new AppiumDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
+
+        driver.resetApp();
 
     }
 
     @Test
     public void testEmp() {
         MainScreen mainScreen = new MainScreen(driver);
-        //проверка на пустой текст buttonChange
-        // MobileElement el1 = (MobileElement) driver.findElementById("ru.netology.testing.uiautomator:id/userInput");
-        String str1 = mainScreen.EditText.getText().toString();
-        mainScreen.EditText.sendKeys("");
-        // MobileElement el3 = (MobileElement) driver.findElementById("ru.netology.testing.uiautomator:id/buttonChange");
-        mainScreen.buttonChange.click();
-
-        String str = mainScreen.EditText.getText(); //str =""
-        Assertions.assertEquals(str1, str); //str
+        String str1 = " ";
+        mainScreen.setEditText(" ");
+        mainScreen.ClickButtonChange();
+        String str = mainScreen.editTextGetText();
+        Assertions.assertEquals(str1, str);
     }
 
 
@@ -57,16 +51,13 @@ public class Sample {
     public void enterText() throws InterruptedException {
         //проверка на ввод текста
         MainScreen mainScreen = new MainScreen(driver);
-        // MobileElement el1 = (MobileElement) driver.findElementById("ru.netology.testing.uiautomator:id/userInput");
-        mainScreen.EditText.sendKeys("www");
-        String str = mainScreen.EditText.getText();
-        // MobileElement el3 = (MobileElement) driver.findElementById("ru.netology.testing.uiautomator:id/buttonActivity");
-        mainScreen.buttonActivity.click();
-        //MobileElement el4 = (MobileElement) driver.findElementById("ru.netology.testing.uiautomator:id/text");
+        mainScreen.setEditText("www");
+        String str = mainScreen.editTextGetText();
+        mainScreen.ClickButtonActive();
         TimeUnit.SECONDS.sleep(6);
-        mainScreen.setPage2();
-        String str2 = mainScreen.TextView1.getText().toString();
-        Assertions.assertEquals(str.toString(), str2.toString());
+
+        String str2 = mainScreen.textGetString();
+        Assertions.assertEquals(str, str2);
 
     }
 
